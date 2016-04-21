@@ -1,5 +1,5 @@
 var Question = require('../models/question');
-var questions = {}
+var questions = {};
 
 questions.index = function(req, res) {
   Question.find({}, function(err, questions) {
@@ -21,5 +21,33 @@ questions.create = function(req, res) {
   });
 };
 
-
+questions.update = function(req, res) {
+  Question.findById( req.params.id, function(err, question){
+    if (err) {
+      return res.json(err);
+    }
+    if (req.query.vote === "up") {
+      question.voteUp(function(err, question){
+        if (err) {
+          return res.json(err);
+        }
+        return res.json(question);
+      });
+    }
+    if (req.query.vote === "down") {
+      question.voteCount -= 1;
+      question.save(function(err, question){
+        if (err) {
+          return res.json(err);
+        }
+        return res.json(question);
+      });
+    }
+  });
+    //or in the schema
+    // question.voteCount += 1;
+    // question.save(function(){
+    //   res.json({message: "updated"});
+    // });
+};
 module.exports = questions;
