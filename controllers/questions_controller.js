@@ -15,7 +15,7 @@ questions.create = function(req, res) {
   question.createdAt = req.body.createdAt;
   question.save(function(err){
     if(err){
-      throw err;
+      return res.json({error: err});
     }
     res.json({success: true, message: 'question created'});
   });
