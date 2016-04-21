@@ -6,6 +6,20 @@ questions.index = function(req, res) {
     if (err) return res.json(err);
     res.json(questions);
   });
-}
+};
+
+questions.create = function(req, res) {
+  var question = new Question();
+  question.title = req.body.title;
+  question.body = req.body.body;
+  question.createdAt = req.body.createdAt;
+  question.save(function(err){
+    if(err){
+      throw err;
+    }
+    res.json({success: true, message: 'question created'});
+  });
+};
+
 
 module.exports = questions;
